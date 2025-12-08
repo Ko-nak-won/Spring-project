@@ -1,0 +1,93 @@
+services:
+  # ═══════════════════════════════════════════════════════════
+  # PostgreSQL 데이터베이스
+  # ═══════════════════════════════════════════════════════════
+  postgres:
+    image: postgres:15-alpine
+    container_name: ds-postgres
+    environment:
+      POSTGRES_DB: dataplatform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: Asia/Seoul
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ds-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════
+  # Spring Boot 백엔드 API
+  # ═══════════════════════════════════════════════════════════
+  backend:
+    build:
+      context: ./ds
+      dockerfile: Dockerfile
+    container_name: ds-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dataplatform
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      FASTAPI_URL: http://analysis:8000
+      JWT_SECRET: drop-and-see-super-secret-jwt-key-for-production-2024-make-it-long
+      TZ: Asia/Seoul
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ds-network
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════
+  # FastAPI 분석 서버
+  # ═══════════════════════════════════════════════════════════
+  analysis:
+    build:
+      context: ./analysis-server
+      dockerfile: Dockerfile
+    container_name: ds-analysis
+    environment:
+      TZ: Asia/Seoul
+    volumes:
+      - analysis_uploads:/app/uploads
+      - analysis_charts:/app/charts
+    networks:
+      - ds-network
+    restart: unless-stopped
+
+  # ═══════════════════════════════════════════════════════════
+  # React 프론트엔드 (Nginx)
+  # ═══════════════════════════════════════════════════════════
+  frontend:
+    build:
+      context: ./ds-project
+      dockerfile: Dockerfile
+    container_name: ds-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - analysis
+    networks:
+      - ds-network
+    restart: unless-stopped
+
+# ═══════════════════════════════════════════════════════════
+# 네트워크 설정
+# ═══════════════════════════════════════════════════════════
+networks:
+  ds-network:
+    driver: bridge
+
+# ═══════════════════════════════════════════════════════════
+# 볼륨 설정 (데이터 영속성)
+# ═══════════════════════════════════════════════════════════
+volumes:
+  postgres_data:
+  analysis_uploads:
+  analysis_charts:

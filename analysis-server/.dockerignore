@@ -1,0 +1,22 @@
+# 가상환경
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 업로드/차트 (컨테이너에서 새로 생성)
+uploads/
+charts/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore

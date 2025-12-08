@@ -1,0 +1,124 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🐘 Docker PostgreSQL",
+            "type": "shell",
+            "command": "docker-compose up -d",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🐍 FastAPI Server",
+            "type": "shell",
+            "command": ".\\venv\\Scripts\\activate; uvicorn main:app --reload --port 8000",
+            "options": {
+                "cwd": "${workspaceFolder}/analysis-server"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Uvicorn running.*$",
+                    "endsPattern": "^.*Application startup complete.*$"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "servers"
+            }
+        },
+        {
+            "label": "☕ Spring Boot Server",
+            "type": "shell",
+            "command": ".\\gradlew.bat bootRun",
+            "options": {
+                "cwd": "${workspaceFolder}/ds"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Starting.*$",
+                    "endsPattern": "^.*Started.*$"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "servers"
+            },
+            "dependsOn": ["🐘 Docker PostgreSQL"]
+        },
+        {
+            "label": "⚛️ React Dev Server",
+            "type": "shell",
+            "command": "npm run dev",
+            "options": {
+                "cwd": "${workspaceFolder}/ds-project"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*VITE.*$",
+                    "endsPattern": "^.*ready in.*$"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "servers"
+            }
+        },
+        {
+            "label": "🚀 Start All Services",
+            "dependsOn": [
+                "🐘 Docker PostgreSQL",
+                "🐍 FastAPI Server",
+                "☕ Spring Boot Server",
+                "⚛️ React Dev Server"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "🛑 Stop All Docker",
+            "type": "shell",
+            "command": "docker-compose down",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
