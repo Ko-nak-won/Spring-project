@@ -369,8 +369,6 @@ docker-compose -f docker-compose.prod.yml build --no-cache
           <br />
           <sub><b>고낙원</b></sub>
         </a>
-        <br />
-        <sub>Full Stack Developer</sub>
       </td>
     </tr>
   </table>
