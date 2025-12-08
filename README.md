@@ -364,10 +364,10 @@ docker-compose -f docker-compose.prod.yml build --no-cache
   <table>
     <tr>
       <td align="center">
-        <a href="https://github.com/your-username">
+        <a href="https://github.com/Ko-nak-won/Spring-project.git">
           <img src="https://github.com/your-username.png" width="100px;" alt=""/>
           <br />
-          <sub><b>Your Name</b></sub>
+          <sub><b>고낙원</b></sub>
         </a>
         <br />
         <sub>Full Stack Developer</sub>
