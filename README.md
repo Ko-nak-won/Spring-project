@@ -1,7 +1,4 @@
-<!-- 헤더 배너 -->
-<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=Drop%20%26%20See&fontSize=50&fontColor=fff&animation=twinkling&fontAlignY=35&desc=데이터%20분석%20플랫폼&descAlignY=55&descSize=20" width="100%" />
-</div>
+
 
 <!-- 배지 -->
 <div align="center">
